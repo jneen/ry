@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+
+# Library version
+
+VERSION="0.0.1"
+[[ -z "$R_PREFIX" ]] && R_PREFIX="$HOME/.local"
+R_LIB="${R_PREFIX}/lib/r"
+R_RUBIES="${R_LIB}/rubies"
+
+#
+# Exit with the given <msg ...>
+#
+
+abort() {
+  printf "\033[31mError: $@\033[0m\n" >/dev/stderr && exit 1
+}
+
+#
+# Output r version.
+#
+r::version() {
+  echo $VERSION
+}
+
+#
+# check whether a command is defined
+#
+exists?() {
+  type "$@" &>/dev/null
+}
+
+# setup
+
+[[ -d $R_RUBIES ]] || mkdir -p $R_RUBIES
+
+if [[ ! -d $R_RUBIES ]]; then
+  abort "Failed to create rubies directory ($R_RUBIES), do you have permissions to do this?"
+fi
+
+# curl / wget support
+
+# curl support
+if exists? curl; then
+  get() { curl -# -L "$@" ;}
+# wget support (Added --no-check-certificate for Github downloads)
+elif exists? wget; then
+  get() { wget --no-check-certificate -q -O- "$@" ;}
+else
+  abort "curl or wget required"
+fi
+
+# alias
+r::help() { r::usage ;}
+
+#
+# Output the current ruby
+#
+r::current() {
+  basename "$(readlink -f "$R_LIB/current")"
+}
+
+r::setup() {
+cat <<bash
+export PATH="$R_LIB/current/bin:\$PATH"
+bash
+}
+
+# Display current ruby name
+# and others installed.
+r::ls() {
+  local active="$(r current)"
+  for dir in $R_RUBIES/*; do
+    local name=${dir##*/}
+    if [[ "$name" == "$active" ]]; then
+      printf "  \033[32mο\033[0m $name \033[90m$config\033[0m\n"
+    else
+      printf "    $name\n"
+    fi
+  done
+}
+
+#
+# r install <name> <tarball> [config ...]
+# Installs the ruby from <tarball> under the given name.
+#
+r::install() {
+  local name="$1"; shift
+  local url="$1"; shift
+  local config="$@"
+
+  local dir=$R_RUBIES/$name
+  local logpath="/tmp/r.log"
+
+  # create build directory
+  local builddir="$R_RUBIES/$name/src"
+  mkdir -p $builddir
+
+  echo -n "fetching <$url> ..."
+  # fetch and unpack
+  cd $builddir \
+    && get "$url" | tar xz --strip-components=1 > $logpath 2>&1
+  echo "done."
+
+  # see if things are alright
+  if test $? -gt 0; then
+    echo "\033[31mError: installation failed\033[0m"
+    echo "  r failed to fetch the tarball,"
+    echo "  or tar failed. Try a different"
+    echo "  version or view $logpath for"
+    echo "  error details."
+    exit 1
+  fi
+
+  cd "$builddir" \
+    && ./configure --prefix $R_RUBIES/$name $config\
+    && build_and_install \
+    && r use $name
+}
+
+#
+# build and install a ruby from source in the current directory.
+#
+build_and_install() {
+  if [[ -f ./Makefile ]]; then
+    exists? make || abort "make is required to build this ruby."
+    make install
+  elif [[ -f ./Rakefile ]]; then
+    exists? rake || abort "rake is required to build this ruby."
+    rake install
+  else
+    abort "couldn't figure out how to build this ruby."
+  fi
+}
+
+#
+# Use the given ruby
+#
+r::use() {
+  local name="$1"
+  pushd "$R_LIB" &>/dev/null
+  rm -f current
+  ln -s "rubies/$name" current
+  popd &>/dev/null
+  r current
+}
+
+#
+# Remove <name ...>
+#
+
+r::remove() {
+  local name="$1"
+  [[ -z "$name" ]] && abort "name(s) required"
+
+  while [[ $# != 0 ]]; do
+    rm -rf "$R_RUBIES/$name"
+    shift
+  done
+}
+
+#
+# Output usage information.
+#
+r::usage() {
+  cat <<-usage
+
+  Usage: r [COMMAND] [args]
+
+  Commands:
+
+    r                   Output the installed rubies
+    r ls
+
+    r <name>            Use the ruby given by <name>
+    r use <name>
+
+    r remove <name>     Remove the given rubies
+    r rm <name>
+
+
+  Options:
+
+    -V, --version   Output current version of r
+    -h, --help      Display help information
+usage
+}
+
+# Main function (delegates to r::*)
+r() {
+  if [[ $# == 0 ]]; then
+    r ls
+  else
+    case "$1" in
+      -V|--version) r version ;;
+      -h|--help|--usage|-?) r usage ;;
+      *)
+        if exists? "r::$1"; then
+          local command="$1"; shift
+          "r::$command" "$@"
+        else
+          r::use "$@"
+        fi
+      ;;
+    esac
+  fi
+}
+
+r "$@"
