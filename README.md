@@ -19,9 +19,9 @@ eval "$(ry setup)"
 or, if you don't like `eval`, you can do it manually:
 
 ``` bash
-export R_PREFIX="$HOME/.local"
-export PATH="$R_PREFIX/lib/ry/current/bin:$PATH"
-. "$R_PREFIX/lib/ry.bash_completion"
+export RY_PREFIX="$HOME/.local"
+export PATH="$RY_PREFIX/lib/ry/current/bin:$PATH"
+. "$RY_PREFIX/lib/ry.bash_completion"
 ```
 
 ## Usage
