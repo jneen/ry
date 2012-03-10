@@ -2,7 +2,7 @@
 
 # Library version
 
-VERSION="0.0.1"
+VERSION="0.1.0"
 [[ -z "$R_PREFIX" ]] && R_PREFIX="$HOME/.local"
 R_LIB="${R_PREFIX}/lib/r"
 R_RUBIES="${R_LIB}/rubies"
