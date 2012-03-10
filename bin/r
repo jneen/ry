@@ -168,6 +168,8 @@ r::remove() {
   done
 }
 
+r::rm() { r::remove "$@" ;}
+
 #
 # Output usage information.
 #
