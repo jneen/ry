@@ -3,9 +3,9 @@
 # Library version
 
 VERSION="0.1.0"
-[[ -z "$R_PREFIX" ]] && R_PREFIX="$HOME/.local"
-R_LIB="${R_PREFIX}/lib/r"
-R_RUBIES="${R_LIB}/rubies"
+[[ -z "$RY_PREFIX" ]] && RY_PREFIX="$HOME/.local"
+RY_LIB="${RY_PREFIX}/lib/ry"
+RY_RUBIES="${RY_LIB}/rubies"
 
 #
 # Exit with the given <msg ...>
@@ -16,9 +16,9 @@ abort() {
 }
 
 #
-# Output r version.
+# Output ry version.
 #
-r::version() {
+ry::version() {
   echo $VERSION
 }
 
@@ -31,10 +31,10 @@ exists?() {
 
 # setup
 
-[[ -d $R_RUBIES ]] || mkdir -p $R_RUBIES
+[[ -d $RY_RUBIES ]] || mkdir -p $RY_RUBIES
 
-if [[ ! -d $R_RUBIES ]]; then
-  abort "Failed to create rubies directory ($R_RUBIES), do you have permissions to do this?"
+if [[ ! -d $RY_RUBIES ]]; then
+  abort "Failed to create rubies directory ($RY_RUBIES), do you have permissions to do this?"
 fi
 
 # curl / wget support
@@ -50,34 +50,34 @@ else
 fi
 
 # alias
-r::help() { r::usage ;}
+ry::help() { ry usage ;}
 
 #
 # Output the current ruby
 #
-r::current() {
-  basename "$(readlink -f "$R_LIB/current")"
+ry::current() {
+  basename "$(readlink -f "$RY_LIB/current")"
 }
 
-r::setup() {
+ry::setup() {
 cat <<sh
-export PATH="$R_LIB/current/bin:\$PATH";
-. "$R_PREFIX/lib/r.bash_completion"
+export PATH="$RY_LIB/current/bin:\$PATH";
+. "$RY_PREFIX/lib/ry.bash_completion"
 sh
 }
 
 # Display current ruby name
 # and others installed.
-r::ls() {
-  for dir in $R_RUBIES/*; do
+ry::ls() {
+  for dir in $RY_RUBIES/*; do
     echo "${dir##*/}"
   done
 }
 
-# Porcelain version of r::ls
-r::rubies() {
-  local active="$(r current)"
-  r ls | while read name; do
+# Porcelain version of ry::ls
+ry::rubies() {
+  local active="$(ry current)"
+  ry ls | while read name; do
     if [[ "$name" == "$active" ]]; then
       printf "  \033[32mο\033[0m $name \033[90m$config\033[0m\n"
     else
@@ -87,19 +87,19 @@ r::rubies() {
 }
 
 #
-# r install <name> <tarball> [config ...]
+# ry install <name> <tarball> [config ...]
 # Installs the ruby from <tarball> under the given name.
 #
-r::install() {
+ry::install() {
   local name="$1"; shift
   local url="$1"; shift
   local config="$@"
 
-  local dir=$R_RUBIES/$name
-  local logpath="/tmp/r.log"
+  local dir=$RY_RUBIES/$name
+  local logpath="/tmp/ry.log"
 
   # create build directory
-  local builddir="$R_RUBIES/$name/src"
+  local builddir="$RY_RUBIES/$name/src"
   mkdir -p $builddir
 
   echo -n "fetching <$url> ..."
@@ -111,7 +111,7 @@ r::install() {
   # see if things are alright
   if test $? -gt 0; then
     echo "\033[31mError: installation failed\033[0m"
-    echo "  r failed to fetch the tarball,"
+    echo "  ry failed to fetch the tarball,"
     echo "  or tar failed. Try a different"
     echo "  version or view $logpath for"
     echo "  error details."
@@ -119,9 +119,9 @@ r::install() {
   fi
 
   cd "$builddir" \
-    && ./configure --prefix $R_RUBIES/$name $config\
+    && ./configure --prefix $RY_RUBIES/$name $config\
     && build_and_install \
-    && r use $name
+    && ry use $name
 }
 
 #
@@ -142,83 +142,83 @@ build_and_install() {
 #
 # Use the given ruby
 #
-r::use() {
+ry::use() {
   local name="$1"
-  if [[ ! -d "$R_LIB/rubies/$name" ]]; then
+  if [[ ! -d "$RY_LIB/rubies/$name" ]]; then
     abort "no such ruby: $name"
   fi
 
-  pushd "$R_LIB" &>/dev/null
+  pushd "$RY_LIB" &>/dev/null
   rm -f current
   ln -s "rubies/$name" current
   popd &>/dev/null
-  r current
+  ry current
 }
 
 #
 # Remove <name ...>
 #
 
-r::remove() {
+ry::remove() {
   local name="$1"
   [[ -z "$name" ]] && abort "name(s) required"
 
   while [[ $# != 0 ]]; do
-    rm -rf "$R_RUBIES/$name"
+    rm -rf "$RY_RUBIES/$name"
     shift
   done
 }
 
-r::rm() { r::remove "$@" ;}
+ry::rm() { ry::remove "$@" ;}
 
 #
 # Output usage information.
 #
-r::usage() {
+ry::usage() {
   cat <<-usage
 
-  Usage: r [COMMAND] [args]
+  Usage: ry [COMMAND] [args]
 
   Commands:
 
-    r                   Output the installed rubies
-    r ls
+    ry                   Output the installed rubies
+    ry ls
 
-    r rubies            Output the installed rubies,
+    ry rubies            Output the installed rubies,
                         and highlight the current one
 
-    r <name>            Use the ruby given by <name>
-    r use <name>
+    ry <name>            Use the ruby given by <name>
+    ry use <name>
 
-    r remove <name>     Remove the given rubies
-    r rm <name>
+    ry remove <name>     Remove the given rubies
+    ry rm <name>
 
 
   Options:
 
-    -V, --version   Output current version of r
+    -V, --version   Output current version of ry
     -h, --help      Display help information
 usage
 }
 
-# Main function (delegates to r::*)
-r() {
+# Main function (delegates to ry::*)
+ry() {
   if [[ $# == 0 ]]; then
-    r ls
+    ry ls
   else
     case "$1" in
-      -V|--version) r version ;;
-      -h|--help|--usage|-?) r usage ;;
+      -V|--version) ry version ;;
+      -h|--help|--usage|-?) ry usage ;;
       *)
-        if exists? "r::$1"; then
+        if exists? "ry::$1"; then
           local command="$1"; shift
-          "r::$command" "$@"
+          "ry::$command" "$@"
         else
-          r::use "$@"
+          ry::use "$@"
         fi
       ;;
     esac
   fi
 }
 
-r "$@"
+ry "$@"

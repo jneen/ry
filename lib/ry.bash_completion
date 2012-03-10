@@ -1,5 +1,5 @@
 #!/bin/bash
-__complete_r() {
+__complete_ry() {
   # echo "COMP_WORDS:<$COMP_WORDS>"
   # echo "COMP_CWORD:<$COMP_CWORD>"
 
@@ -10,7 +10,7 @@ __complete_r() {
 
   if [[ "${#COMP_WORDS[@]}" < 3 ]]; then
     options="$(
-      r ls
+      ry ls
       echo version
       echo help
       echo current
@@ -27,16 +27,14 @@ __complete_r() {
     local command="${COMP_WORDS[1]}"
     case "$command" in
       use|rm|remove)
-        options="$(r ls)"
+        options="$(ry ls)"
       ;;
       *)
         options="$(compgen -f)"
     esac
   fi
 
-  local rubies="$(r ls)"
-
   COMPREPLY=( $(compgen -W "$options" -- "$cur") )
 }
 
-complete -F __complete_r r
+complete -F __complete_ry ry

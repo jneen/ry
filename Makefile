@@ -1,8 +1,8 @@
 PREFIX ?= $(HOME)/.local
 
-INSTALLED_FILE = $(PREFIX)/bin/r
-LOCAL_BIN = ./bin/r
+INSTALLED_FILE = $(PREFIX)/bin/ry
+LOCAL_BIN = ./bin/ry
 
 install:
-	cp ./bin/r $(PREFIX)/bin/r
-	cp ./lib/r.bash_completion $(PREFIX)/lib/r.bash_completion
+	cp -p ./bin/ry $(PREFIX)/bin/ry
+	cp -p ./lib/ry.bash_completion $(PREFIX)/lib/ry.bash_completion
