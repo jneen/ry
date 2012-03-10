@@ -14,6 +14,10 @@ abort() {
   printf "\033[31mError: $@\033[0m\n" >&2 && exit 1
 }
 
+log() {
+  printf "\033[90mry:\033[0m $@\n"
+}
+
 #
 # Output ry version.
 #
@@ -117,25 +121,42 @@ ry::install() {
     exit 1
   fi
 
-  cd "$builddir" \
-    && ./configure --prefix $RY_LIB/rubies/$name $config\
-    && build_and_install \
-    && ry use $name
+  ry build "$name" "$@"
+  ry use "$name"
 }
 
 #
-# build and install a ruby from source in the current directory.
+# build and install the given ruby from source
 #
-build_and_install() {
+ry::build() {
+  local name="$1"
+  assert_installed "$name"
+
+  local install_prefix="$RY_LIB/rubies/$name"
+  local builddir="$install_prefix/src"
+
+  pushd "$builddir" > /dev/null
+
+  if [[ -x "./configure" ]]; then
+    log "running ./configure --prefix=\"$install_prefix\"..."
+    ./configure --prefix="$install_prefix" "$@"
+  else
+    log "no ./configure script found, skipping..."
+  fi
+
   if [[ -f ./Makefile ]]; then
+    log "Makefile found, building with PREFIX=\"$install_prefix\" make install"
     exists? make || abort "make is required to build this ruby."
-    make install
+    PREFIX="$install_prefix" make install
   elif [[ -f ./Rakefile ]]; then
+    log "Rakefile found, building with PREFIX=\"$install_prefix\" rake install"
     exists? rake || abort "rake is required to build this ruby."
-    rake install
+    PREFIX="$install_prefix" rake install
   else
     abort "couldn't figure out how to build this ruby."
   fi
+
+  popd >/dev/null
 }
 
 # assert_installed <name>
