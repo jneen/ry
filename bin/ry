@@ -139,20 +139,61 @@ build_and_install() {
   fi
 }
 
+# assert_installed <name>
+# abort unless the given ruby is installed
+assert_installed() {
+  if [[ ! -d "$RY_LIB/rubies/$1" ]]; then
+    abort "no such ruby: $1"
+  fi
+}
+
 #
 # Use the given ruby
 #
 ry::use() {
   local name="$1"
-  if [[ ! -d "$RY_LIB/rubies/$name" ]]; then
-    abort "no such ruby: $name"
-  fi
+  assert_installed "$name"
 
   pushd "$RY_LIB" &>/dev/null
   rm -f current
   ln -s "rubies/$name" current
   popd &>/dev/null
   ry current
+}
+
+#
+# ry binpath <name>
+# Print the path to the bin directory for the given ruby.
+# You can add this to your path to activate it for a particular
+# subshell or process.
+#
+ry::binpath() {
+  local name="$1"; shift
+  assert_installed "$name"
+  echo -n "$RY_LIB/rubies/$name/bin"
+}
+
+#
+# ry fullpath <name>
+# Print a modified version of $PATH that points to the given ruby.
+#
+ry::fullpath() {
+  local name="$1"; shift
+  ry binpath "$name"
+  tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
+    echo -n ":$line"
+  done
+}
+
+#
+# ry exec <name>[,<name2>[,...]] <command...>
+# execute the given command in the context of the given rub{y,ies}
+#
+ry::exec() {
+  local names="$1"; shift
+  tr , "\n" <<<"$names" | while read name; do
+    PATH="$(ry fullpath "$name")" "$@"
+  done
 }
 
 #

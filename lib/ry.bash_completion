@@ -26,7 +26,7 @@ __complete_ry() {
   else
     local command="${COMP_WORDS[1]}"
     case "$command" in
-      use|rm|remove)
+      use|rm|remove|binpath|fullpath|exec)
         options="$(ry ls)"
       ;;
       *)
