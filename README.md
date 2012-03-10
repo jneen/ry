@@ -29,6 +29,7 @@ export PATH="$RY_PREFIX/lib/ry/current/bin:$PATH"
 Ry is a bit different from [other][rvm] [version][rbenv] [managers][nvm].  The major design goal of ry is to be explicit, unobtrusive, and easy to query.  In the vein of the [n][] package manager for node, there are no subshells, and the only thing it needs to add to your environment is a single entry to your `$PATH` (also tab completion if you like).  For example, here's how you create a new installation:
 
 [rvm]: http://rvm.beginrescueend.com/
+[nvm]: https://github.com/creationix/nvm
 [rbenv]: https://github.com/sstephenson/rbenv
 [n]: https://github.com/visionmedia/n
 
