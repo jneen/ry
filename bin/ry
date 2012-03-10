@@ -5,7 +5,6 @@
 VERSION="0.1.0"
 [[ -z "$RY_PREFIX" ]] && RY_PREFIX="$HOME/.local"
 RY_LIB="${RY_PREFIX}/lib/ry"
-RY_RUBIES="${RY_LIB}/rubies"
 
 #
 # Exit with the given <msg ...>
@@ -31,10 +30,10 @@ exists?() {
 
 # setup
 
-[[ -d $RY_RUBIES ]] || mkdir -p $RY_RUBIES
+[[ -d $RY_LIB/rubies ]] || mkdir -p $RY_LIB/rubies
 
-if [[ ! -d $RY_RUBIES ]]; then
-  abort "Failed to create rubies directory ($RY_RUBIES), do you have permissions to do this?"
+if [[ ! -d $RY_LIB/rubies ]]; then
+  abort "Failed to create rubies directory ($RY_LIB/rubies), do you have permissions to do this?"
 fi
 
 # curl / wget support
@@ -69,7 +68,7 @@ sh
 # Display current ruby name
 # and others installed.
 ry::ls() {
-  for dir in $RY_RUBIES/*; do
+  for dir in $RY_LIB/rubies/*; do
     echo "${dir##*/}"
   done
 }
@@ -95,11 +94,11 @@ ry::install() {
   local url="$1"; shift
   local config="$@"
 
-  local dir=$RY_RUBIES/$name
+  local dir=$RY_LIB/rubies/$name
   local logpath="/tmp/ry.log"
 
   # create build directory
-  local builddir="$RY_RUBIES/$name/src"
+  local builddir="$RY_LIB/rubies/$name/src"
   mkdir -p $builddir
 
   echo -n "fetching <$url> ..."
@@ -119,7 +118,7 @@ ry::install() {
   fi
 
   cd "$builddir" \
-    && ./configure --prefix $RY_RUBIES/$name $config\
+    && ./configure --prefix $RY_LIB/rubies/$name $config\
     && build_and_install \
     && ry use $name
 }
@@ -205,7 +204,7 @@ ry::remove() {
   [[ -z "$name" ]] && abort "name(s) required"
 
   while [[ $# != 0 ]]; do
-    rm -rf "$RY_RUBIES/$name"
+    rm -rf "$RY_LIB/rubies/$name"
     shift
   done
 }
