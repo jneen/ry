@@ -147,6 +147,8 @@ assert_installed() {
 }
 
 #
+# ry use <name>
+# ry <name>
 # Use the given ruby
 #
 ry::use() {
@@ -225,13 +227,22 @@ ry::usage() {
     ry ls
 
     ry rubies            Output the installed rubies,
-                        and highlight the current one
+                         and highlight the current one
 
     ry <name>            Use the ruby given by <name>
     ry use <name>
 
     ry remove <name>     Remove the given rubies
     ry rm <name>
+
+    ry exec <name>[,<name>[,...]] <command...>
+                         Execute <command> in the context of each
+                         comma-separated ruby.
+
+    ry binpath <name>    Print the bin directory for the given ruby
+
+    ry fullpath <name>   Print a modified version of \$PATH that exclusively
+                         includes the given ruby's path.
 
 
   Options:
