@@ -57,5 +57,5 @@ ry install mri-custom https://github.com/ruby/ruby/tarball/<hash>
 It will also build Rubinius:
 
 ``` bash
-ry install rbx https://github.com/rubinius/rubinius/tarball/v0.9.0
+ry install rbx https://github.com/rubinius/rubinius/tarball/v0.2.4
 ```
