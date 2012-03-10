@@ -1,0 +1,42 @@
+#!/bin/bash
+__complete_r() {
+  # echo "COMP_WORDS:<$COMP_WORDS>"
+  # echo "COMP_CWORD:<$COMP_CWORD>"
+
+  local cur="${COMP_WORDS[$COMP_CWORD]}"
+  local command="${COMP_WORDS[1]}"
+
+  local options=()
+
+  if [[ "${#COMP_WORDS[@]}" < 3 ]]; then
+    options="$(
+      r ls
+      echo version
+      echo help
+      echo current
+      echo setup
+      echo ls
+      echo rubies
+      echo install
+      echo use
+      echo remove
+      echo rm
+      echo usage
+    )"
+  else
+    local command="${COMP_WORDS[1]}"
+    case "$command" in
+      use|rm|remove)
+        options="$(r ls)"
+      ;;
+      *)
+        options="$(compgen -f)"
+    esac
+  fi
+
+  local rubies="$(r ls)"
+
+  COMPREPLY=( $(compgen -W "$options" -- "$cur") )
+}
+
+complete -F __complete_r r

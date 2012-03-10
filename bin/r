@@ -60,9 +60,10 @@ r::current() {
 }
 
 r::setup() {
-cat <<bash
-export PATH="$R_LIB/current/bin:\$PATH"
-bash
+cat <<sh
+export PATH="$R_LIB/current/bin:\$PATH";
+. "$R_PREFIX/lib/r.bash_completion"
+sh
 }
 
 # Display current ruby name
