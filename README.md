@@ -39,7 +39,7 @@ ry install mri-1.9.3 http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.g
 This creates an installation of Ruby called `mri-1.9.3` using the tarball from `ruby-lang.org`.  To switch to this ruby, use
 
 ``` bash
-ry use mri-1.9.3 # or: ry mry-1.9.3
+ry use mri-1.9.3 # or: ry mri-1.9.3
 ```
 
 Want to use the latest HEAD?
