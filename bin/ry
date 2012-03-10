@@ -192,7 +192,9 @@ ry::fullpath() {
 #
 ry::exec() {
   local names="$1"; shift
-  tr , "\n" <<<"$names" | while read name; do
+  names="$(tr , "\n" <<<"$names")"
+
+  for name in $names; do
     PATH="$(ry fullpath "$name")" "$@"
   done
 }
