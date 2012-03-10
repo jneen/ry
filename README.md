@@ -1,4 +1,4 @@
-# ry: the simplest version manager for Ruby
+# ry: the simplest ruby virtual env
 
 ## Installation
 
@@ -26,7 +26,7 @@ export PATH="$R_PREFIX/lib/ry/current/bin:$PATH"
 
 ## Usage
 
-Ry is a bit different from [other][rvm] [version][rbenv] [managers][n].  The major design goal of ry is to be explicit, unobtrusive, and easy to query.  For example, here's how you create a new installation:
+Ry is a bit different from [other][rvm] [version][rbenv] [managers][nvm].  The major design goal of ry is to be explicit, unobtrusive, and easy to query.  In the vein of the [n][] package manager for node, there are no subshells, and the only thing it needs to add to your environment is a single entry to your `$PATH` (also tab completion if you like).  For example, here's how you create a new installation:
 
 [rvm]: http://rvm.beginrescueend.com/
 [rbenv]: https://github.com/sstephenson/rbenv
