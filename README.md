@@ -2,7 +2,7 @@
 
 ## Installation
 
-### From the git repo
+Install the files
 
 ``` bash
 git clone git://github.com/jayferd/r
@@ -10,9 +10,16 @@ cd r
 PREFIX=$HOME/.local make install
 ```
 
-### From the single executable
+and add the following to your bashrc:
 
+``` bash
+eval "$(r setup)"
 ```
-curl https://raw.github.com/jayferd/r/master/bin/r > $SOMEWHERE_ON_YOUR_PATH
-chmod +x $SOMEWHERE_ON_YOUR_PATH/r
+
+or, if you don't like `eval`, you can do it manually:
+
+``` bash
+export R_PREFIX="$HOME/.local"
+export PATH="$R_PREFIX/lib/r/current/bin:$PATH"
+. "$R_PREFIX/lib/r.bash_completion"
 ```
