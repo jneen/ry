@@ -11,7 +11,7 @@ RY_LIB="${RY_PREFIX}/lib/ry"
 #
 
 abort() {
-  printf "\033[31mError: $@\033[0m\n" >/dev/stderr && exit 1
+  printf "\033[31mError: $@\033[0m\n" >&2 && exit 1
 }
 
 #
