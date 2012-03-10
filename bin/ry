@@ -96,7 +96,8 @@ ry::rubies() {
 ry::install() {
   local name="$1"; shift
   local url="$1"; shift
-  local config="$@"
+
+  [[ -z "$url" ]] && abort "no URL given.  usage: ry install <name> <url>"
 
   local dir=$RY_LIB/rubies/$name
   local logpath="/tmp/ry.log"
