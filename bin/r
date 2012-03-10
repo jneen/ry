@@ -137,6 +137,10 @@ build_and_install() {
 #
 r::use() {
   local name="$1"
+  if [[ ! -d "$R_LIB/rubies/$name" ]]; then
+    abort "no such ruby: $name"
+  fi
+
   pushd "$R_LIB" &>/dev/null
   rm -f current
   ln -s "rubies/$name" current
