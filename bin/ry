@@ -171,7 +171,7 @@ ry::use() {
 ry::binpath() {
   local name="$1"; shift
   assert_installed "$name"
-  echo -n "$RY_LIB/rubies/$name/bin"
+  echo "$RY_LIB/rubies/$name/bin"
 }
 
 #
@@ -180,7 +180,7 @@ ry::binpath() {
 #
 ry::fullpath() {
   local name="$1"; shift
-  ry binpath "$name"
+  ry binpath "$name" | tr -d "\n"
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
   done
