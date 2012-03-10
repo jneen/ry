@@ -68,9 +68,15 @@ bash
 # Display current ruby name
 # and others installed.
 r::ls() {
-  local active="$(r current)"
   for dir in $R_RUBIES/*; do
-    local name=${dir##*/}
+    echo "${dir##*/}"
+  done
+}
+
+# Porcelain version of r::ls
+r::rubies() {
+  local active="$(r current)"
+  r ls | while read name; do
     if [[ "$name" == "$active" ]]; then
       printf "  \033[32mο\033[0m $name \033[90m$config\033[0m\n"
     else
@@ -174,6 +180,9 @@ r::usage() {
 
     r                   Output the installed rubies
     r ls
+
+    r rubies            Output the installed rubies,
+                        and highlight the current one
 
     r <name>            Use the ruby given by <name>
     r use <name>
