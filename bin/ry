@@ -149,6 +149,9 @@ ry::build() {
     log "Makefile found, building with PREFIX=\"$install_prefix\" make install"
     exists? make || abort "make is required to build this ruby."
     PREFIX="$install_prefix" make install
+  elif [[ -x ./installer ]]; then
+    log "./installer script found, running ./install --auto=\"$install_prefix\""
+    ./installer --auto="$install_prefix"
   elif [[ -f ./Rakefile ]]; then
     log "Rakefile found, building with PREFIX=\"$install_prefix\" rake install"
     exists? rake || abort "rake is required to build this ruby."
