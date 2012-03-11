@@ -122,7 +122,7 @@ ry::install() {
     exit 1
   fi
 
-  ry build "$name" "$@"
+  ry build "$name" "$@" || abort "build failed."
   ry use "$name"
 }
 
