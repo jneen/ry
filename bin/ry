@@ -90,12 +90,12 @@ ry::rubies() {
 }
 
 #
-# ry install <name> <tarball> [config ...]
+# ry install <tarball> <name> [config ...]
 # Installs the ruby from <tarball> under the given name.
 #
 ry::install() {
-  local name="$1"; shift
   local url="$1"; shift
+  local name="$1"; shift
 
   [[ -z "$url" ]] && abort "no URL given.  usage: ry install <name> <url>"
 
@@ -258,6 +258,11 @@ ry::usage() {
 
     ry <name>            Use the ruby given by <name>
     ry use <name>
+
+    ry install <tarball> <name>
+                         Download and compile <tarball>,
+                         and install as <name>.
+
 
     ry remove <name>     Remove the given rubies
     ry rm <name>
