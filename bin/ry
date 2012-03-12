@@ -2,7 +2,7 @@
 
 # Library version
 
-VERSION="0.1.0"
+VERSION="0.2.0"
 [[ -z "$RY_PREFIX" ]] && RY_PREFIX="$HOME/.local"
 RY_LIB="${RY_PREFIX}/lib/ry"
 
