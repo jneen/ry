@@ -1,8 +1,5 @@
 #!/bin/bash
 __complete_ry() {
-  # echo "COMP_WORDS:<$COMP_WORDS>"
-  # echo "COMP_CWORD:<$COMP_CWORD>"
-
   local cur="${COMP_WORDS[$COMP_CWORD]}"
   local command="${COMP_WORDS[1]}"
 
