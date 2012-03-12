@@ -93,36 +93,48 @@ ry::rubies() {
 # ry install <tarball> <name> [config ...]
 # Installs the ruby from <tarball> under the given name.
 #
+# ry install <ruby-name> [<name>]
+# If ruby-build is present, use it to install <ruby-name>.
+#
 ry::install() {
   local url="$1"; shift
   local name="$1"; shift
 
-  [[ -z "$url" ]] && abort "no URL given.  usage: ry install <name> <url>"
+  # if you've got ruby-build, and you've named one of its recipes,
+  # use that instead :)
+  if exists? ruby-build \
+  && ruby-build --definitions | grep -qx "$url"; then
+    [[ -z "$name" ]] && name="$url"
+    ruby-build "$url" "$RY_LIB/rubies/$name"
+  else
+    [[ -z "$url" ]] && abort "no URL given.  usage: ry install <name> <url>"
 
-  local dir=$RY_LIB/rubies/$name
-  local logpath="/tmp/ry.log"
+    local dir="$RY_LIB/rubies/$name"
+    local logpath="/tmp/ry.log"
 
-  # create build directory
-  local builddir="$RY_LIB/rubies/$name/src"
-  mkdir -p $builddir
+    # create build directory
+    local builddir="$RY_LIB/rubies/$name/src"
+    mkdir -p $builddir
 
-  echo -n "fetching <$url> ..."
-  # fetch and unpack
-  cd $builddir \
-    && get "$url" | tar xz --strip-components=1 > $logpath 2>&1
-  echo "done."
+    echo -n "fetching <$url> ..."
+    # fetch and unpack
+    cd $builddir \
+      && get "$url" | tar xz --strip-components=1 > $logpath 2>&1
+    echo "done."
 
-  # see if things are alright
-  if test $? -gt 0; then
-    echo "\033[31mError: installation failed\033[0m"
-    echo "  ry failed to fetch the tarball,"
-    echo "  or tar failed. Try a different"
-    echo "  version or view $logpath for"
-    echo "  error details."
-    exit 1
+    # see if things are alright
+    if test $? -gt 0; then
+      echo "\033[31mError: installation failed\033[0m"
+      echo "  ry failed to fetch the tarball,"
+      echo "  or tar failed. Try a different"
+      echo "  version or view $logpath for"
+      echo "  error details."
+      exit 1
+    fi
+
+    ry build "$name" "$@" || abort "build failed."
   fi
 
-  ry build "$name" "$@" || abort "build failed."
   ry use "$name"
 }
 
@@ -263,6 +275,10 @@ ry::usage() {
                          Download and compile <tarball>,
                          and install as <name>.
 
+    ry install <ruby-name> [<name>]
+                         Requires \`ruby-build\`.  Install the ruby-build
+                         recipe named by <ruby-name>, optionally under
+                         the alias <name>.
 
     ry remove <name>     Remove the given rubies
     ry rm <name>

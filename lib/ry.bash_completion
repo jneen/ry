@@ -26,6 +26,11 @@ __complete_ry() {
       use|rm|remove|binpath|fullpath|exec)
         options="$(ry ls)"
       ;;
+      install)
+        if type ruby-build &>/dev/null; then
+          options="$(ruby-build --definitions)"
+        fi
+      ;;
       *)
         options="$(compgen -f)"
     esac
