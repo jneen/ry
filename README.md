@@ -34,7 +34,7 @@ Ry is a bit different from [other][rvm] [version][rbenv] [managers][nvm].  The m
 [n]: https://github.com/visionmedia/n
 
 ``` bash
-ry install mri-1.9.3 http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz
+ry install http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz mr1-1.9.3
 ```
 
 This creates an installation of Ruby called `mri-1.9.3` using the tarball from `ruby-lang.org`.  To switch to this ruby, use
@@ -43,20 +43,17 @@ This creates an installation of Ruby called `mri-1.9.3` using the tarball from `
 ry use mri-1.9.3 # or: ry mri-1.9.3
 ```
 
-Want to use the latest HEAD?
+Want to use a custom commit?
 
 ``` bash
-ry install mri-head https://github.com/ruby/ruby/tarball/HEAD
+ry install https://github.com/ruby/ruby/tarball/<hash> mri-custom
 ```
 
-Or a custom commit?
+### ruby-build
+If you have `ruby-build` installed, you can use it very easily with ry:
 
 ``` bash
-ry install mri-custom https://github.com/ruby/ruby/tarball/<hash>
+ry install 1.9.3-p125
 ```
 
-It will also build Rubinius:
-
-``` bash
-ry install rbx https://github.com/rubinius/rubinius/tarball/v1.2.4
-```
+For more information, see `ry help`.
