@@ -59,7 +59,7 @@ ry::help() { ry usage ;}
 # Output the current ruby
 #
 ry::current() {
-  basename "$(readlink -f "$RY_LIB/current")"
+  basename "$(readlink "$RY_LIB/current")"
 }
 
 ry::setup() {
@@ -192,10 +192,8 @@ ry::use() {
   local name="$1"
   assert_installed "$name"
 
-  pushd "$RY_LIB" &>/dev/null
-  rm -f current
-  ln -s "rubies/$name" current
-  popd &>/dev/null
+  rm -f "$RY_LIB/current"
+  ln -s "$RY_LIB/rubies/$name" "$RY_LIB/current"
   ry current
 }
 
