@@ -32,6 +32,18 @@ exists?() {
   type "$@" &>/dev/null
 }
 
+# indir <dir> <cmd...>
+# perform <cmd> in the directory <dir>
+#
+indir() {
+  local dir="$1"; shift
+  local olddir="$PWD"
+  cd "$dir" && "$@"
+  local status=$?
+  cd "$olddir"
+  return $status
+}
+
 # setup
 
 [[ -d $RY_LIB/rubies ]] || mkdir -p $RY_LIB/rubies
@@ -59,7 +71,7 @@ ry::help() { ry usage ;}
 # Output the current ruby
 #
 ry::current() {
-  basename "$(readlink -f "$RY_LIB/current")"
+  basename "$(readlink "$RY_LIB/current")"
 }
 
 ry::setup() {
@@ -192,10 +204,8 @@ ry::use() {
   local name="$1"
   assert_installed "$name"
 
-  pushd "$RY_LIB" &>/dev/null
-  rm -f current
-  ln -s "rubies/$name" current
-  popd &>/dev/null
+  rm -f "$RY_LIB/current"
+  indir "$RY_LIB" ln -s "rubies/$name" current
   ry current
 }
 
