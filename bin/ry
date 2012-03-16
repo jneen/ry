@@ -32,6 +32,18 @@ exists?() {
   type "$@" &>/dev/null
 }
 
+# indir <dir> <cmd...>
+# perform <cmd> in the directory <dir>
+#
+indir() {
+  local dir="$1"; shift
+  local olddir="$PWD"
+  cd "$dir" && "$@"
+  local status=$?
+  cd "$olddir"
+  return $status
+}
+
 # setup
 
 [[ -d $RY_LIB/rubies ]] || mkdir -p $RY_LIB/rubies
@@ -193,7 +205,7 @@ ry::use() {
   assert_installed "$name"
 
   rm -f "$RY_LIB/current"
-  ln -s "$RY_LIB/rubies/$name" "$RY_LIB/current"
+  indir "$RY_LIB" ln -s "rubies/$name" current
   ry current
 }
 
