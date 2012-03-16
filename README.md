@@ -34,7 +34,7 @@ Ry is a bit different from [other][rvm] [version][rbenv] [managers][nvm].  The m
 [n]: https://github.com/visionmedia/n
 
 ``` bash
-ry install http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz mr1-1.9.3
+ry install http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz mri-1.9.3
 ```
 
 This creates an installation of Ruby called `mri-1.9.3` using the tarball from `ruby-lang.org`.  To switch to this ruby, use
