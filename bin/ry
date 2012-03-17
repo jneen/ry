@@ -236,6 +236,16 @@ ry::fullpath() {
 }
 
 #
+# ry export <name>
+# Print an evaluable version of $PATH that points to the given ruby.
+#
+ry::export() {
+  local name="$1"
+  assert_installed "$name"
+  echo "export PATH=`ry fullpath "$name"`"
+}
+
+#
 # ry exec <name>[,<name2>[,...]] <command...>
 # execute the given command in the context of the given rub{y,ies}
 #
@@ -302,6 +312,9 @@ ry::usage() {
     ry binpath <name>    Print the bin directory for the given ruby
 
     ry fullpath <name>   Print a modified version of \$PATH that exclusively
+                         includes the given ruby's path.
+
+    ry export <name>     Print an _evaluable_ version of \$PATH that exclusively
                          includes the given ruby's path.
 
 
