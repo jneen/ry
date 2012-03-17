@@ -190,7 +190,7 @@ ry::build() {
 # assert_installed <name>
 # abort unless the given ruby is installed
 assert_installed() {
-  if [ -z "$1" ]; then
+  if [[ -z "$1" ]]; then
     abort "ruby version missing"
   elif [[ ! -d "$RY_LIB/rubies/$1" ]]; then
     abort "no such ruby: $1"
