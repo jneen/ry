@@ -237,7 +237,8 @@ ry::fullpath() {
 
 #
 # ry export <name>
-# Print an evaluable version of $PATH that points to the given ruby.
+# Print a sh-evaluable bash snippet that export $PATH as the
+# fullpath for the given ruby.
 #
 ry::export() {
   local name="$1"
@@ -314,8 +315,8 @@ ry::usage() {
     ry fullpath <name>   Print a modified version of \$PATH that exclusively
                          includes the given ruby's path.
 
-    ry export <name>     Print an _evaluable_ version of \$PATH that exclusively
-                         includes the given ruby's path.
+    ry export <name>     Print a sh-evaluable snippet that sets \$PATH to
+                         \`ry fullpath <name>\`.
 
 
   Options:
