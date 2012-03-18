@@ -10,9 +10,10 @@ cd ry
 PREFIX=$HOME/.local make install
 ```
 
-and add the following to your bashrc:
+and add the following lines to your bashrc:
 
 ``` bash
+export PATH="$HOME/.local/bin:$PATH"
 eval "$(ry setup)"
 ```
 
