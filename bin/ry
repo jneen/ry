@@ -250,17 +250,6 @@ ry::fullpath() {
 }
 
 #
-# ry export <name>
-# Print a sh-evaluable bash snippet that export $PATH as the
-# fullpath for the given ruby.
-#
-ry::export() {
-  local name="$1"
-  assert_installed "$name"
-  echo "export PATH=`ry fullpath "$name"`"
-}
-
-#
 # ry exec <name>[,<name2>[,...]] <command...>
 # execute the given command in the context of the given rub{y,ies}
 #
@@ -329,9 +318,6 @@ ry::usage() {
     ry fullpath [<name>] Print a modified version of \$PATH that exclusively
                          includes the given ruby's path.
                          If no name is given, uses the \`current\` symlink
-
-    ry export <name>     Print a sh-evaluable snippet that sets \$PATH to
-                         \`ry fullpath <name>\`.
 
 
   Options:
