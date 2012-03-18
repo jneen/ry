@@ -265,12 +265,11 @@ ry::exec() {
 #
 # Remove <name ...>
 #
-
 ry::remove() {
-  local name="$1"
-  [[ -z "$name" ]] && abort "name(s) required"
+  [[ $# == 0 ]] && abort "name(s) required"
 
   while [[ $# != 0 ]]; do
+    local name="$1"
     rm -rf "$RY_LIB/rubies/$name"
     shift
   done
