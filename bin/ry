@@ -224,12 +224,21 @@ ry::binpath() {
 }
 
 #
+# ry fullpath
 # ry fullpath <name>
-# Print a modified version of $PATH that points to the given ruby.
+#
+# Print a modified version of $PATH that points to the given ruby, or
+# to the `current` symlink if no name is given
 #
 ry::fullpath() {
   local name="$1"; shift
-  ry binpath "$name" | tr -d "\n"
+
+  if [[ -n "$name" ]]; then
+    ry binpath "$name"
+  else
+    echo "$RY_LIB/current"
+  fi | tr -d "\n"
+
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
   done
@@ -312,8 +321,9 @@ ry::usage() {
 
     ry binpath <name>    Print the bin directory for the given ruby
 
-    ry fullpath <name>   Print a modified version of \$PATH that exclusively
+    ry fullpath [<name>] Print a modified version of \$PATH that exclusively
                          includes the given ruby's path.
+                         If no name is given, uses the \`current\` symlink
 
     ry export <name>     Print a sh-evaluable snippet that sets \$PATH to
                          \`ry fullpath <name>\`.
