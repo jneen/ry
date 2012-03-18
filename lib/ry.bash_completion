@@ -23,7 +23,7 @@ __complete_ry() {
   else
     local command="${COMP_WORDS[1]}"
     case "$command" in
-      use|rm|remove|binpath|fullpath|exec)
+      use|rm|remove|binpath|fullpath|exec|setup)
         options="$(ry ls)"
       ;;
       install)
