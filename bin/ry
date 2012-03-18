@@ -74,9 +74,14 @@ ry::current() {
   basename "$(readlink "$RY_LIB/current")"
 }
 
+#
+# eval "$(ry setup [<name>])"
+# a shortcut to load the correct paths and
+# activate the completion
+#
 ry::setup() {
 cat <<sh
-export PATH="$RY_LIB/current/bin:\$PATH";
+export PATH="$(ry fullpath "$@")"
 . "$RY_PREFIX/lib/ry.bash_completion"
 sh
 }
