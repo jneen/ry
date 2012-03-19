@@ -13,6 +13,8 @@ PREFIX=$HOME/.local make install
 and add the following lines to your bashrc:
 
 ``` bash
+# If you're using the default ~/.local prefix,
+# make sure ~/.local/bin is on your $PATH.
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(ry setup)"
 ```
