@@ -81,8 +81,8 @@ ry::current() {
 #
 ry::setup() {
 cat <<sh
-export PATH="$(ry fullpath "$@")"
-. "$RY_PREFIX/lib/ry.bash_completion"
+export PATH="$(ry fullpath "$@")";
+if [ -n "\$BASH_VERSION" ]; then . "$RY_PREFIX/lib/ry.bash_completion"; fi
 sh
 }
 
