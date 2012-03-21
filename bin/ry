@@ -241,7 +241,7 @@ ry::fullpath() {
   if [[ -n "$name" ]]; then
     ry binpath "$name"
   else
-    echo "$RY_LIB/current"
+    echo "$RY_LIB/current/bin"
   fi | tr -d "\n"
 
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
