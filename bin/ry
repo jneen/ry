@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Library version
+VERSION="0.3.1"
 
-VERSION="0.3.0"
 [[ -z "$RY_PREFIX" ]] && RY_PREFIX="$HOME/.local"
 RY_LIB="${RY_PREFIX}/lib/ry"
 
