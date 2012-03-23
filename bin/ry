@@ -169,7 +169,7 @@ ry::build() {
 
   if [[ -x "./configure" ]]; then
     log "running ./configure --prefix=\"$install_prefix\"..."
-    ./configure --prefix="$install_prefix" "$@"
+    ./configure --prefix="$install_prefix" "${@:2}"
   else
     log "no ./configure script found, skipping..."
   fi
