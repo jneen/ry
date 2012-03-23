@@ -159,7 +159,9 @@ ry::install() {
 # build and install the given ruby from source
 #
 ry::build() {
-  local name="$1"
+  local name="$1"; shift
+  local config_args="$@"
+
   assert_installed "$name"
 
   local install_prefix="$RY_LIB/rubies/$name"
@@ -169,7 +171,7 @@ ry::build() {
 
   if [[ -x "./configure" ]]; then
     log "running ./configure --prefix=\"$install_prefix\"..."
-    ./configure --prefix="$install_prefix" "${@:2}"
+    ./configure --prefix="$install_prefix" "$config_args"
   else
     log "no ./configure script found, skipping..."
   fi
