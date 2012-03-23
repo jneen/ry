@@ -156,7 +156,10 @@ ry::install() {
 }
 
 #
-# build and install the given ruby from source
+# ry build <name> <args...>
+# build and install the given ruby from source.
+# remaining arguments will be passed to ./configure,
+# if it's present.
 #
 ry::build() {
   local name="$1"; shift
