@@ -83,6 +83,7 @@ ry::setup() {
 cat <<sh
 export PATH="$(ry fullpath "$@")";
 if [ -n "\$BASH_VERSION" ]; then . "$RY_PREFIX/lib/ry.bash_completion"; fi
+if [ -n "\$ZSH_VERSION" ]; then . "$RY_PREFIX/lib/ry.zsh_completion"; fi
 sh
 }
 
