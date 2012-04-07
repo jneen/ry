@@ -1,46 +1,48 @@
-_ry() {
-  local -a rubies
-  if (( CURRENT > 2 )); then
-    shift words
-    (( CURRENT-- ))
-    subcmd="$words[1]"
+#compdef ry
 
-    case $subcmd in
-      setup|use|remove|rm|exec|binpath|fullpath)
-        rubies=($(_call_program rubies ry ls))
-      ;;
-      install)
-        if (( $+commands[ruby-build] )); then
-          rubies=($(_call_program rubies ruby-build --definitions))
-        fi
-      ;;
-      *)
-        rubies=()
-      ;;
-    esac
-    _describe rubies rubies
-  else
-    local -a commands
-    # usage is not listed so "use" completes directly
-    commands=(
-      version:'show ry version'
-      help:'show the help'
-      current:'show the current ruby name'
-      setup:'setup ry (with an optional ruby as an argument)'
-      ls:'output the installed rubies'
-      rubies:'output the installed rubies, and highlight the current one'
-      use:'use the given ruby'
-      install:'install the given ruby-build recipe'
-      remove:'remove the given rubies'
-      rm:'remove the given rubies'
-      exec:'execute a command in the context of each comma-separated ruby'
-      binpath:'print the bin directory for the given ruby'
-      fullpath:'print a modified version of $PATH that exclusively includes the given ruby'
-    )
-    rubies=($(_call_program rubies ry ls))
-    _describe commands commands
-    _describe rubies rubies
-  fi
-}
+# ry ZSH completion function
+# Symlink (or copy) this file in your $fpath (like /usr/share/zsh/site-functions)
+# and name it _ry: ln -s path/to/this/file _ry
 
-compdef _ry ry
+local -a rubies
+if (( CURRENT > 2 )); then
+  shift words
+  (( CURRENT-- ))
+  local subcmd="$words[1]"
+
+  case $subcmd in
+    setup|use|remove|rm|exec|binpath|fullpath)
+      rubies=($(_call_program rubies ry ls))
+    ;;
+    install)
+      if (( $+commands[ruby-build] )); then
+        rubies=($(_call_program rubies ruby-build --definitions))
+      fi
+    ;;
+    *)
+      rubies=()
+    ;;
+  esac
+  _describe rubies rubies
+else
+  local -a commands
+  # usage is not listed so "use" completes directly
+  commands=(
+    version:'show ry version'
+    help:'show the help'
+    current:'show the current ruby name'
+    setup:'setup ry (with an optional ruby as an argument)'
+    ls:'output the installed rubies'
+    rubies:'output the installed rubies, and highlight the current one'
+    use:'use the given ruby'
+    install:'install the given ruby-build recipe'
+    remove:'remove the given rubies'
+    rm:'remove the given rubies'
+    exec:'execute a command in the context of each comma-separated ruby'
+    binpath:'print the bin directory for the given ruby'
+    fullpath:'print a modified version of $PATH that exclusively includes the given ruby'
+  )
+  rubies=($(_call_program rubies ry ls))
+  _describe commands commands
+  _describe rubies rubies
+fi
