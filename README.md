@@ -10,7 +10,7 @@ cd ry
 PREFIX=$HOME/.local make install
 ```
 
-and add the following lines to your bashrc:
+and add the following lines to your bashrc (or zshrc):
 
 ``` bash
 # If you're using the default ~/.local prefix,
@@ -26,6 +26,8 @@ export RY_PREFIX="$HOME/.local"
 export PATH="$RY_PREFIX/lib/ry/current/bin:$PATH"
 . "$RY_PREFIX/lib/ry.bash_completion"
 ```
+
+For ZSH completion, see [this](https://github.com/jayferd/ry/blob/master/lib/ry.zsh_completion).
 
 ## Usage
 
