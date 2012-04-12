@@ -1,4 +1,5 @@
-PREFIX ?= $(HOME)/.local
+RY_PREFIX ?= $(HOME)/.local
+PREFIX ?= $(RY_PREFIX)
 
 INSTALLED_FILE = $(PREFIX)/bin/ry
 LOCAL_BIN = ./bin/ry
