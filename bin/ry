@@ -119,8 +119,8 @@ ry::install() {
 
   # if you've got ruby-build, and you've named one of its recipes,
   # use that instead :)
-  [[ -z "$name" ]] && name="$url"
   [[ -z "$url" ]] && abort "no URL given.  usage: ry install <url> <name>"
+  [[ -z "$name" ]] && name="$url"
   local dir="$RY_LIB/rubies/$name"
   if exists? ruby-build \
   && ruby-build --definitions | grep -qx "$url"; then
