@@ -258,10 +258,15 @@ ry::fullpath() {
 #
 # ry exec <name>[,<name2>[,...]] <command...>
 # execute the given command in the context of the given rub{y,ies}
+# use all installed rubies if <name> is "all"
 #
 ry::exec() {
   local names="$1"; shift
-  names="$(tr , "\n" <<<"$names")"
+  if [[ "$names" == "all" ]]; then
+    names="$(ry ls)"
+  else
+    names="$(tr , "\n" <<<"$names")"
+  fi
 
   for name in $names; do
     PATH="$(ry fullpath "$name")" "$@"
@@ -316,7 +321,7 @@ ry::usage() {
 
     ry exec <name>[,<name>[,...]] <command...>
                          Execute <command> in the context of each
-                         comma-separated ruby.
+                         comma-separated ruby (or all installed rubies with "all").
 
     ry binpath <name>    Print the bin directory for the given ruby
 
