@@ -172,6 +172,11 @@ ry::build() {
 
   pushd "$builddir" > /dev/null
 
+  if [[ ! -x "./configure" ]] && [[ -f "./configure.in" ]] && [[ -x `which autoconf` ]]; then
+    log "running autoconf..."
+    autoconf
+  fi
+
   if [[ -x "./configure" ]]; then
     log "running configure script."
     "./configure --prefix=\"$install_prefix\" $config_args"
@@ -183,10 +188,26 @@ ry::build() {
   if [[ -f ./Makefile ]]; then
     log "Makefile found, building with PREFIX=\"$install_prefix\" make install"
     exists? make || abort "make is required to build this ruby."
-    PREFIX="$install_prefix" make install
+    PREFIX="$install_prefix" make && make install
   elif [[ -x ./installer ]]; then
-    log "./installer script found, running ./install --auto=\"$install_prefix\""
-    ./installer --auto="$install_prefix"
+    log "./installer script found, running ./install --auto=\"$install_prefix\" \"$config_args\""
+    ./installer --auto="$install_prefix" "$config_args"
+  elif [[ -f ./build.xml ]]; then
+    log "build.xml found, building JRuby with ant"
+    exists? ant || abort "ant is required to build this ruby."
+    ant jar
+
+    for binary in jirb jruby jgem ; do
+      log "linking "$binary" as ${binary#j}"
+      ln -fs "$binary" "bin/${binary#j}"
+    done
+
+    log "linking bin and lib directories"
+    ln -s "$builddir/bin" "$install_prefix/bin"
+    ln -s "$builddir/lib" "$install_prefix/lib"
+
+    log "Setting the JRUBY_HOME environment variable to $RY_LIB/current. It's recommended to add it to your shell profile."
+    export JRUBY_HOME=$RY_LIB/current
   elif [[ -f ./Rakefile ]]; then
     log "Rakefile found, building with PREFIX=\"$install_prefix\" rake install"
     exists? rake || abort "rake is required to build this ruby."
