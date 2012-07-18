@@ -62,3 +62,11 @@ ry install 1.9.3-p125
 ```
 
 For more information, see `ry help`.
+
+## Developing
+
+All of the magic is in the bash script `bin/ry`.  Here are a couple of bash features I use that aren't common elsewhere:
+
+* Poor man's namespacing - the character `:` is a perfectly valid character to use in a bash function's name.  All of ry's subcommands are implemented as functions looking like `ry::foo`.  At the bottom of the file is the function `ry` which essentially delegates to `ry::$1` - so to add a new subcommand, all you need to do is define the bash function and document it in `ry::usage`.
+
+* Piping from heredocs is awesome.  The syntax `cmd <<<"$variable"` runs `cmd` with stdin as the content of `$variable`.  I use this extensively, and you should too.
