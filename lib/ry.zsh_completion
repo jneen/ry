@@ -11,7 +11,7 @@ if (( CURRENT > 2 )); then
   local subcmd="$words[1]"
 
   case $subcmd in
-    setup|use|remove|rm|exec|binpath|fullpath)
+    setup|use|remove|rm|exec|binpath|fullpath|system)
       rubies=($(_call_program rubies ry ls))
     ;;
     install)
@@ -41,6 +41,7 @@ else
     exec:'execute a command in the context of each comma-separated ruby'
     binpath:'print the bin directory for the given ruby'
     fullpath:'print a modified version of $PATH that exclusively includes the given ruby'
+    system:'fallback to the default system version'
   )
   rubies=($(_call_program rubies ry ls))
   _describe commands commands
