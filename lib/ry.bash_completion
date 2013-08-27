@@ -19,6 +19,7 @@ __complete_ry() {
       echo remove
       echo rm
       echo usage
+      echo system
     )"
   else
     local command="${COMP_WORDS[1]}"

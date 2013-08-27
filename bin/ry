@@ -310,6 +310,14 @@ ry::remove() {
 ry::rm() { ry::remove "$@" ;}
 
 #
+# ry system
+# Fallback to the default system version
+#
+ry::system() {
+  rm -f "$RY_LIB/current"
+}
+
+#
 # Output usage information.
 #
 ry::usage() {
@@ -349,6 +357,8 @@ ry::usage() {
     ry fullpath [<name>] Print a modified version of \$PATH that exclusively
                          includes the given ruby's path.
                          If no name is given, uses the \`current\` symlink
+
+    ry system            Fallback to the default system version
 
 
   Options:
