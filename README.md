@@ -29,6 +29,14 @@ export PATH="$RY_PREFIX/lib/ry/current/bin:$PATH"
 
 For ZSH completion, see [this](https://github.com/jayferd/ry/blob/master/lib/ry.zsh_completion).
 
+If you want to specify a different directory for installing rubies:
+
+```bash
+# rubies are installed into $RY_PREFIX/lib/ry/rubies
+# set RY_RUBIES for an alternate location
+export RY_RUBIES="$HOME/.rubies"
+```
+
 ## Usage
 
 Ry is a bit different from [other][rvm] [version][rbenv] [managers][nvm].  The major design goal of ry is to be explicit, unobtrusive, and easy to query.  In the vein of the [n][] package manager for node, there are no subshells, and the only thing it needs to add to your environment is a single entry to your `$PATH` (also tab completion if you like).  For example, here's how you create a new installation:
