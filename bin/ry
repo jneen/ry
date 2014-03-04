@@ -173,9 +173,13 @@ ry::build() {
 
   pushd "$builddir" > /dev/null
 
-  if [[ ! -x "./configure" ]] && [[ -f "./configure.in" ]] && [[ -x `which autoconf` ]]; then
-    log "running autoconf..."
-    autoconf
+  if [[ ! -x "./configure" ]] && [[ -f "./configure.in" ]]; then
+    if exists? autoconf; then
+      log "running autoconf..."
+      autoconf
+    else
+      abort "autoconf is required to build this ruby."
+    fi
   fi
 
   if [[ -x "./configure" ]]; then
