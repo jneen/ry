@@ -3,7 +3,7 @@
 # Library version
 VERSION="0.4.0"
 
-[[ -z "$RY_PREFIX" ]] && RY_PREFIX="$HOME/.local"
+[[ -z "$RY_PREFIX" ]] && RY_PREFIX="$(dirname "$(dirname "$0")")"
 [[ -z "$RY_LIB" ]]    && RY_LIB="${RY_PREFIX}/lib/ry"
 [[ -z "$RY_RUBIES" ]] && RY_RUBIES="${RY_LIB}/rubies"
 
