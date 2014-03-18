@@ -244,7 +244,7 @@ ry::use() {
   assert_installed "$name"
 
   rm -f "$RY_LIB/current"
-  indir "$RY_RUBIES" ln -s "$name" current
+  indir "$RY_LIB" ln -s "$RY_RUBIES/$name" current
   ry current
 }
 
