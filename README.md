@@ -2,7 +2,9 @@
 
 ## Installation
 
-Install the files
+If you're on a Mac with homebrew installed, you may simply `brew install ry` and follow the instructions.
+
+Otherwise, install the files from the repo to your favorite prefix (I use `~/.local`, which is the default).
 
 ``` bash
 git clone git://github.com/jayferd/ry
@@ -22,9 +24,7 @@ eval "$(ry setup)"
 or, if you don't like `eval`, you can do it manually:
 
 ``` bash
-export RY_PREFIX="$HOME/.local"
-export PATH="$RY_PREFIX/lib/ry/current/bin:$PATH"
-. "$RY_PREFIX/lib/ry.bash_completion"
+export PATH="$PREFIX/lib/ry/current/bin:$PATH"
 ```
 
 For ZSH completion, see [this](https://github.com/jayferd/ry/blob/master/lib/ry.zsh_completion).
