@@ -272,13 +272,15 @@ ry::binpath() {
 ry::fullpath() {
   local name="$1"; shift
 
-  assert_installed "$name" echo "$PATH"
-
   if [[ -n "$name" ]]; then
     ry binpath "$name"
   else
     echo "$RY_LIB/current/bin"
   fi | tr -d "\n"
+
+  # the abort inside `binpath` doesn't carry over the pipe unfortunately
+  local status=$PIPESTATUS
+  [[ $status = 0 ]] || exit $status
 
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
