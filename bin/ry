@@ -82,7 +82,7 @@ ry::current() {
 #
 ry::setup() {
 cat <<sh
-export PATH="$(ry fullpath "$@")";
+export PATH=$(printf "%q" "$(ry fullpath "$@")");
 sh
 }
 
@@ -268,16 +268,19 @@ ry::binpath() {
 #
 ry::fullpath() {
   local name="$1"; shift
+  local status
 
   if [[ -n "$name" ]]; then
     ry binpath "$name"
   else
     echo "$RY_LIB/current/bin"
   fi | tr -d "\n"
+  status=$PIPESTATUS
 
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
-  done
+  done; echo
+  return $status
 }
 
 #
@@ -294,7 +297,7 @@ ry::exec() {
   fi
 
   for name in $names; do
-    PATH="$(ry fullpath "$name")" "$@"
+    PATH=$(ry fullpath "$name") "$@"
   done
 }
 
