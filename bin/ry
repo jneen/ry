@@ -223,13 +223,16 @@ ry::build() {
   popd >/dev/null
 }
 
-# assert_installed <name>
-# abort unless the given ruby is installed
+# assert_installed <name> [<commands>]
+# run [commands] and abort unless the given ruby is installed
 assert_installed() {
-  if [[ -z "$1" ]]; then
+  local name="$1"; shift
+  if [[ -z "$name" ]]; then
+    [[ -n "$@" ]] && "$@"
     abort "ruby version missing"
-  elif [[ ! -d "$RY_RUBIES/$1" ]]; then
-    abort "no such ruby: $1"
+  elif [[ ! -d "$RY_RUBIES/$name" ]]; then
+    [[ -n "$@" ]] && "$@"
+    abort "no such ruby: $name"
   fi
 }
 
@@ -269,15 +272,13 @@ ry::binpath() {
 ry::fullpath() {
   local name="$1"; shift
 
+  assert_installed "$name" echo "$PATH"
+
   if [[ -n "$name" ]]; then
     ry binpath "$name"
   else
     echo "$RY_LIB/current/bin"
   fi | tr -d "\n"
-  local status=$PIPESTATUS
-  if [[ $status != 0 ]]; then
-    echo "$PATH"; return $status
-  fi
 
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
