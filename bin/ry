@@ -274,6 +274,10 @@ ry::fullpath() {
   else
     echo "$RY_LIB/current/bin"
   fi | tr -d "\n"
+  local status=$PIPESTATUS
+  if [[ $status != 0 ]]; then
+    echo "$PATH"; return $status
+  fi
 
   tr : "\n" <<<"$PATH" | fgrep -v "$RY_LIB" | while read line; do
     echo -n ":$line"
