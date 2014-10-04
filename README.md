@@ -27,7 +27,7 @@ or, if you don't like `eval`, you can do it manually:
 export PATH="$PREFIX/lib/ry/current/bin:$PATH"
 ```
 
-For ZSH completion, see [this](https://github.com/jayferd/ry/blob/master/lib/ry.zsh_completion).
+For ZSH completion, see [this](https://github.com/jneen/ry/blob/master/share/ry.zsh_completion).
 
 If you want to specify a different directory for installing rubies:
 
