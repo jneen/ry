@@ -7,7 +7,7 @@ If you're on a Mac with homebrew installed, you may simply `brew install ry` and
 Otherwise, install the files from the repo to your favorite prefix (I use `~/.local`, which is the default).
 
 ``` bash
-git clone git://github.com/jayferd/ry
+git clone git://github.com/jneen/ry
 cd ry
 PREFIX=$HOME/.local make install
 ```
