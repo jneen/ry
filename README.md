@@ -69,6 +69,16 @@ If you have `ruby-build` installed, you can use it very easily with ry:
 ry install 1.9.3-p125
 ```
 
+### shell-local ruby selection
+
+Because `ry use` changes a symlink, that ruby is globally activated across all shells.  To use a shell-local ruby, simply set your `$PATH` to include that ruby's bin dir.  The easiest way to do this is to use the `ry fullpath <ruby>` helper, which outputs a copy of your `$PATH` variable modified for use with ry.
+
+``` bash
+export PATH="$(ry fullpath my-cool-ruby)"
+```
+
+You can activate this automatically with something like [direnv](http://direnv.net/).
+
 For more information, see `ry help`.
 
 ## Developing
